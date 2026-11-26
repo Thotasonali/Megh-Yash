@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yash &amp; Megh — DSA Zero to Hero (Python &amp; Java)</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #101418; color: #eef2f5; }
+a { color: #7cc4ff; }
+header { padding: 20px 16px 8px; max-width: 960px; margin: 0 auto; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+.sub { color: #9aa7b1; margin: 0 0 12px; }
+.banner { display: none; background: #5a3b00; border: 1px solid #a87400; color: #ffe1a1; padding: 10px 12px; border-radius: 10px; margin: 0 0 12px; font-size: 14px; }
+.banner.show { display: block; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tabs button { background: #1c232b; color: #eef2f5; border: 1px solid #33404c; padding: 9px 16px; border-radius: 999px; font-size: 15px; cursor: pointer; }
+.tabs button.active { background: #fff; color: #111; border-color: #fff; font-weight: 700; }
+main { max-width: 960px; margin: 0 auto; padding: 8px 16px 60px; }
+.profiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+@media (max-width: 600px) { .profiles { grid-template-columns: 1fr; } }
+.pcard { background: #1a2027; border: 1px solid #2c3742; border-radius: 16px; padding: 14px; display: flex; gap: 14px; align-items: center; }
+.ringwrap { position: relative; width: 84px; height: 84px; flex: none; cursor: pointer; background: none; border: none; padding: 0; }
+.ringwrap svg { transform: rotate(-90deg); }
+.ringwrap .avatar { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; }
+.ringwrap .pct { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font-size: 11px; color: #9aa7b1; }
+.pname { font-size: 18px; font-weight: 700; }
+.pstats { color: #9aa7b1; font-size: 13px; line-height: 1.5; margin-top: 2px; }
+.pstats b { color: #eef2f5; }
+.week { background: #171d23; border: 1px solid #2c3742; border-radius: 16px; margin: 14px 0; overflow: hidden; }
+.week > button.whead { width: 100%; text-align: left; background: #1f262e; color: #eef2f5; border: none; padding: 14px 16px; font-size: 17px; font-weight: 700; cursor: pointer; }
+.week .wbody { padding: 12px 14px 16px; display: none; }
+.week.open .wbody { display: block; }
+.lesson { background: #1a2027; border: 1px solid #2c3742; border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+.lesson h3 { margin: 0 0 4px; font-size: 16px; }
+.lesson p { margin: 0 0 8px; color: #b9c4cd; font-size: 14px; }
+.day { background: #232b33; border: 1px solid #33404c; border-radius: 14px; padding: 14px; margin: 10px 0; }
+.day.today { border-color: #7cc4ff; }
+.day .date { font-weight: 700; font-size: 15px; }
+.day .date .todaytag { background: #7cc4ff; color: #06121c; font-size: 11px; border-radius: 999px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+.qbtn { display: block; width: 100%; text-align: left; background: #e8eef3; color: #101418; border: none; border-radius: 12px; padding: 13px 14px; font-size: 16px; font-weight: 600; line-height: 1.35; cursor: pointer; margin: 10px 0; }
+.qbtn small { display: block; font-weight: 500; color: #4a5a66; font-size: 13px; margin-top: 4px; }
+.lc { display: inline-block; background: #0f2a1a; border: 1px solid #2c7a4b; color: #8fe3ae; border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 700; text-decoration: none; margin: 2px 0 8px; }
+.lc.notfound { background: transparent; border: 1px dashed #6b7a86; color: #9aa7b1; font-weight: 600; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.btn { background: #1c232b; color: #eef2f5; border: 1px solid #4a5a66; border-radius: 999px; padding: 9px 14px; font-size: 14px; font-weight: 600; cursor: pointer; }
+.btn.done { background: #1d7a3d; border-color: #1d7a3d; color: #fff; }
+.btn.light { background: #fff; color: #111; border-color: #fff; }
+.btn.primary { background: #2f81f7; border-color: #2f81f7; color: #fff; }
+pre { background: #0d1117; color: #d6e2ea; border: 1px solid #2c3742; border-radius: 10px; padding: 12px; overflow-x: auto; font-size: 13.5px; line-height: 1.5; white-space: pre; }
+table.trace { border-collapse: collapse; width: 100%; font-size: 14px; }
+table.trace th, table.trace td { border: 1px solid #33404c; padding: 7px 9px; text-align: left; vertical-align: top; }
+table.trace th { background: #1f262e; }
+.codehead { display: flex; gap: 8px; align-items: center; margin: 12px 0 0; }
+.codehead span { font-weight: 700; }
+.codehead button { background: #1c232b; color: #eef2f5; border: 1px solid #4a5a66; border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.codehead button.active { background: #fff; color: #111; }
+dialog { background: #171d23; color: #eef2f5; border: 1px solid #33404c; border-radius: 16px; max-width: 640px; width: calc(100% - 32px); padding: 18px; }
+dialog::backdrop { background: rgba(0,0,0,.6); }
+dialog h2 { margin-top: 0; }
+.workitem { border-top: 1px solid #2c3742; padding: 10px 0; }
+.workitem .wt { font-weight: 600; }
+.workitem textarea { width: 100%; background: #0d1117; color: #eef2f5; border: 1px solid #33404c; border-radius: 8px; padding: 8px; margin-top: 6px; font-family: inherit; }
+input[type=text], input[type=number], select, textarea { background: #0d1117; color: #eef2f5; border: 1px solid #33404c; border-radius: 8px; padding: 9px 10px; font-size: 15px; font-family: inherit; }
+.askbox { display: flex; gap: 8px; margin: 12px 0; }
+.askbox input { flex: 1; }
+.sugg { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.sugg button { background: #1c232b; color: #cfe3f2; border: 1px solid #33404c; border-radius: 999px; padding: 7px 12px; cursor: pointer; font-size: 13px; }
+.panel { background: #171d23; border: 1px solid #2c3742; border-radius: 16px; padding: 16px; margin: 12px 0; }
+.panel h2 { margin-top: 0; }
+.panel h3 { margin: 18px 0 6px; }
+.panel p { line-height: 1.6; }
+.heat { display: grid; grid-template-columns: repeat(7, 18px); gap: 4px; margin: 6px 0 14px; }
+.heat span { width: 18px; height: 18px; border-radius: 4px; background: #232b33; border: 1px solid #33404c; display: block; }
+.heat span.done { background: #2fbf5f; border-color: #2fbf5f; }
+.heat span.today { border-color: #7cc4ff; }
+.muted { color: #9aa7b1; font-size: 14px; }
+.card { background: #171d23; border: 1px solid #2c3742; border-radius: 16px; padding: 16px; margin: 12px 0; }
+label { display: block; font-size: 13px; color: #9aa7b1; margin: 10px 0 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🚀 Yash &amp; 🎯 Megh — DSA Zero to Hero</h1>
+  <p class="sub">6 months · 26 weeks · 1 problem a day · about 40 minutes a day · Python &amp; Java · one pattern a week · Weeks 1–2: Big-O only</p>
+  <div class="banner" id="syncBanner"></div>
+  <div class="tabs">
+    <button data-tab="roadmap" class="active">📍 Roadmap</button>
+    <button data-tab="ask">💬 Ask</button>
+    <button data-tab="tracker">📊 Tracker</button>
+  </div>
+</header>
+<main>
+  <section id="profiles" class="profiles"></section>
+  <section id="tab-roadmap"></section>
+  <section id="tab-ask" style="display:none"></section>
+  <section id="tab-tracker" style="display:none"></section>
+</main>
+<dialog id="profileDlg"></dialog>
+<dialog id="explainDlg" style="max-width:760px"></dialog>
+<script src="curriculum.js"></script>
+<script>
+// ---------- data ----------
+const P = {};
+DSA.PATTERNS.forEach(p => P[p.id] = p);
+const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const START = new Date(2026, 10, 23); // Mon 23 Nov 2026, Week 1
+function addDays(d, n) { const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function fmtDate(d) { return DAY_NAMES[(d.getDay() + 6) % 7] + ' · ' + d.getDate() + ' ' + MONTHS[d.getMonth()]; }
+function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+
+function buildDays() {
+  const days = [];
+  DSA.WEEKS.forEach(w => {
+    const pat = P[w.pattern];
+    const redo = (w.pattern === 'bigo' && w.n === 2);
+    const defs = [
+      { kind: 'learn',   prob: pat.problems[0], title: (redo ? 'Again — learn: ' : 'Learn: ') + pat.name + ' — ' + pat.problems[0].t },
+      { kind: 'practice', prob: pat.problems[1], title: (redo ? 'Again — ' : '') + pat.problems[1].t },
+      { kind: 'practice', prob: pat.problems[2], title: (redo ? 'Again — ' : '') + pat.problems[2].t },
+      { kind: 'tiny',     prob: null, tiny: pat.tiny, title: (redo ? 'Again — ' : '') + pat.tiny.t },
+      { kind: 'medium',   prob: pat.problems[3], title: (redo ? 'Again — ' : '') + pat.problems[3].t },
+      { kind: 'redo',     prob: pat.problems[0], title: 'Redo from memory: ' + pat.problems[0].t },
+      { kind: 'teach',    prob: pat.problems[0], title: 'Teach it: explain ' + pat.name + ' in your own words (or write it down like teaching)' },
+    ];
+    defs.forEach((def, i) => {
+      const date = addDays(START, (w.n - 1) * 7 + i);
+      days.push({ id: 'w' + w.n + 'd' + (i + 1), week: w.n, weekTitle: w.title, patternId: w.pattern, date, ...def });
+    });
+  });
+  return days;
+}
+const DAYS = buildDays();
+const TOTAL = DAYS.length; // 182
+const TODAY_ISO = iso(new Date());
+const todayDay = DAYS.find(d => iso(d.date) === TODAY_ISO) || null;
+
+// ---------- state ----------
+let state = { logs: { yash: {}, megh: {} }, topics: { yash: {}, megh: {} }, weekend: [], qa: [] };
+let shared = false; // true when the server store answers
+function localLoad() {
+  try { const raw = localStorage.getItem('dsa-state-v1'); if (raw) { const s = JSON.parse(raw); state = { logs: s.logs || { yash: {}, megh: {} }, topics: s.topics || { yash: {}, megh: {} }, weekend: s.weekend || [], qa: s.qa || [] }; } } catch (e) {}
+}
+function localSave() { try { localStorage.setItem('dsa-state-v1', JSON.stringify(state)); } catch (e) {} }
+async function apiGet() {
+  try {
+    const r = await fetch('/api/state', { cache: 'no-store' });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) { return null; }
+}
+async function loadState() {
+  const data = await apiGet();
+  if (data && data.configured) {
+    shared = true;
+    state = { logs: data.logs || { yash: {}, megh: {} }, topics: data.topics || { yash: {}, megh: {} }, weekend: data.weekend || [], qa: data.qa || [] };
+  } else {
+    shared = false;
+    localLoad();
+    if (data && data.configured === false) showBanner('Shared tracking is not connected yet — the Blob store still needs linking in the Vercel dashboard. For now your ticks are saved on this device only.');
+    else showBanner('Could not reach the shared tracker — your ticks are saved on this device only for now. Check your connection and refresh.');
+  }
+  renderAll();
+}
+function showBanner(msg) { const b = document.getElementById('syncBanner'); b.textContent = msg; b.classList.add('show'); }
+async function apiPost(body) {
+  try {
+    const r = await fetch('/api/state', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (data && data.configured) { state = { logs: data.logs, topics: data.topics, weekend: data.weekend, qa: data.qa }; shared = true; return true; }
+    return null;
+  } catch (e) { return null; }
+}
+async function doAction(body) {
+  const ok = await apiPost(body);
+  if (!ok) {
+    // Fallback: apply locally so the tap still works on this device.
+    const person = body.person === 'megh' ? 'megh' : 'yash';
+    if (body.action === 'toggleDay') { const cur = state.logs[person][body.dayId] || {}; if (cur.done) delete state.logs[person][body.dayId]; else state.logs[person][body.dayId] = { done: true, note: cur.note || '', at: new Date().toISOString() }; }
+    if (body.action === 'setNote') { const cur = state.logs[person][body.dayId] || {}; state.logs[person][body.dayId] = { ...cur, done: !!cur.done, note: String(body.note || '') }; }
+    if (body.action === 'setTopic') { state.topics[person][body.topicId] = body.status; }
+    if (body.action === 'logWeekend') { state.weekend.unshift({ id: 'w' + Date.now(), person, ...body.entry, at: new Date().toISOString() }); }
+    if (body.action === 'saveQa') { state.qa.unshift({ id: 'q' + Date.now(), person, ...body.entry, at: new Date().toISOString() }); }
+    if (body.action === 'deleteQa') { state.qa = state.qa.filter(q => q.id !== body.id); }
+    if (body.action === 'deleteWeekend') { state.weekend = state.weekend.filter(w => w.id !== body.id); }
+    localSave();
+    if (!shared) showBanner('Shared tracking is not connected yet — your ticks are saved on this device only.');
+  }
+  renderAll();
+}
+
+// ---------- helpers ----------
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function doneCount(person) { return Object.values(state.logs[person] || {}).filter(x => x && x.done).length; }
+function streak(person) {
+  const dates = new Set(Object.entries(state.logs[person] || {}).filter(([k, v]) => v && v.done).map(([k]) => { const d = DAYS.find(x => x.id === k); return d ? iso(d.date) : null; }).filter(Boolean));
+  if (!dates.size) return { cur: 0, best: 0 };
+  let best = 0, run = 0;
+  const sorted = [...dates].sort();
+  let prev = null;
+  for (const ds of sorted) {
+    const d = new Date(ds + 'T00:00:00');
+    run = (prev && (d - prev) === 86400000) ? run + 1 : 1;
+    best = Math.max(best, run);
+    prev = d;
+  }
+  // current streak: count back from the latest done date
+  let cur = 0;
+  let d = new Date(sorted[sorted.length - 1] + 'T00:00:00');
+  while (dates.has(iso(d))) { cur++; d = addDays(d, -1); }
+  return { cur, best };
+}
+function ringSVG(pct, color) {
+  const c = 2 * Math.PI * 34;
+  const off = c * (1 - Math.min(1, pct));
+  return '<svg width="84" height="84" viewBox="0 0 84 84"><circle cx="42" cy="42" r="34" fill="none" stroke="#2c3742" stroke-width="7"/><circle cx="42" cy="42" r="34" fill="none" stroke="' + color + '" stroke-width="7" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/></svg>';
+}
+function lcChip(prob) {
+  if (prob && prob.lc) return '<a class="lc" href="https://leetcode.com/problems/' + prob.lc.slug + '/" target="_blank" rel="noopener">🔗 LeetCode #' + prob.lc.n + ' · ' + esc(prob.lc.title) + ' ↗</a>';
+  return '<span class="lc notfound">LeetCode: Not found</span>';
+}
+function codeBlock(py, java, key) {
+  return '<div class="codehead"><span>Code</span>' +
+    '<button data-lang="py" data-key="' + key + '" class="active">🐍 Python</button>' +
+    '<button data-lang="java" data-key="' + key + '">☕ Java</button></div>' +
+    '<pre data-codepy="' + key + '">' + esc(py) + '</pre>' +
+    '<pre data-codejava="' + key + '" style="display:none">' + esc(java) + '</pre>';
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-lang]');
+  if (!b) return;
+  const key = b.dataset.key;
+  document.querySelectorAll('[data-lang][data-key="' + key + '"]').forEach(x => x.classList.toggle('active', x === b));
+  document.querySelectorAll('[data-codepy="' + key + '"]').forEach(x => x.style.display = b.dataset.lang === 'py' ? '' : 'none');
+  document.querySelectorAll('[data-codejava="' + key + '"]').forEach(x => x.style.display = b.dataset.lang === 'java' ? '' : 'none');
+});
+
+// ---------- render: profiles ----------
+const PEOPLE = [{ id: 'yash', name: 'Yash', emoji: '🚀', color: '#a3e635' }, { id: 'megh', name: 'Megh', emoji: '🎯', color: '#fb923c' }];
+function renderProfiles() {
+  document.getElementById('profiles').innerHTML = PEOPLE.map(p => {
+    const done = doneCount(p.id), pct = done / TOTAL, st = streak(p.id);
+    return '<div class="pcard"><button class="ringwrap" data-profile="' + p.id + '" aria-label="Open ' + p.name + ' profile">' +
+      ringSVG(pct, p.color) + '<span class="avatar">' + p.emoji + '</span><span class="pct">' + Math.round(pct * 100) + '% done</span></button>' +
+      '<div><div class="pname">' + p.name + '</div><div class="pstats"><b>' + done + '</b> / ' + TOTAL + ' problems · 🔥 streak <b>' + st.cur + '</b> days · best <b>' + st.best + '</b><br>Tap the circle to see ' + p.name + '\'s work &amp; notes.</div></div></div>';
+  }).join('');
+}
+
+// ---------- render: roadmap ----------
+function dayCard(d) {
+  const prob = d.prob || null;
+  const q = d.tiny ? d.tiny.t : (prob ? prob.t : d.title);
+  const isToday = iso(d.date) === TODAY_ISO;
+  const y = state.logs.yash[d.id], m = state.logs.megh[d.id];
+  return '<div class="day' + (isToday ? ' today' : '') + '" id="day-' + d.id + '">' +
+    '<div class="date">' + fmtDate(d.date) + (isToday ? '<span class="todaytag">TODAY</span>' : '') + '</div>' +
+    '<button class="qbtn" data-open-day="' + d.id + '">❓ Today\'s question — tap to open<small>' + esc(q) + '</small></button>' +
+    lcChip(prob) +
+    '<div class="row">' +
+    '<button class="btn' + (y && y.done ? ' done' : '') + '" data-done="yash" data-day="' + d.id + '">🚀 Yash · ' + (y && y.done ? '✓ Done' : 'Tap Done') + '</button>' +
+    '<button class="btn' + (m && m.done ? ' done' : '') + '" data-done="megh" data-day="' + d.id + '">🎯 Megh · ' + (m && m.done ? '✓ Done' : 'Tap Done') + '</button>' +
+    '<button class="btn light" data-open-day="' + d.id + '">📖 See Explanation</button>' +
+    '</div></div>';
+}
+function renderRoadmap() {
+  const currentWeek = todayDay ? todayDay.week : (DAYS.find(d => !state.logs.yash[d.id] || !state.logs.yash[d.id].done || !state.logs.megh[d.id] || !state.logs.megh[d.id].done) || DAYS[0]).week;
+  document.getElementById('tab-roadmap').innerHTML = DSA.WEEKS.map(w => {
+    const pat = P[w.pattern];
+    const days = DAYS.filter(d => d.week === w.n);
+    const open = w.n === currentWeek ? ' open' : '';
+    return '<div class="week' + open + '"><button class="whead" data-week="' + w.n + '">' + esc(w.title) + ' ▾</button><div class="wbody">' +
+      '<div class="lesson"><h3>📘 ' + esc(pat.name) + '</h3><p>' + esc(pat.tagline) + ' — ' + esc(pat.theory.split('\n')[0]) + '</p>' +
+      '<button class="btn light" data-open-pattern="' + pat.id + '">📖 See Explanation</button> ' +
+      '<button class="btn" data-topic="' + pat.id + '" data-person="yash">🚀 Yash: ' + (state.topics.yash[pat.id] || 'not_started').replace('_', ' ') + '</button> ' +
+      '<button class="btn" data-topic="' + pat.id + '" data-person="megh">🎯 Megh: ' + (state.topics.megh[pat.id] || 'not_started').replace('_', ' ') + '</button></div>' +
+      days.map(dayCard).join('') + '</div></div>';
+  }).join('');
+}
+
+// ---------- explanation dialog ----------
+function explanationHTML(pat, day) {
+  const prob = day && day.prob ? day.prob : null;
+  const q = day ? (day.tiny ? day.tiny.t : (prob ? prob.t : day.title)) : null;
+  const qPy = day ? (day.tiny ? day.tiny.py : (prob ? prob.py : pat.pyBasic)) : pat.pyBasic;
+  const qJava = day ? (day.tiny ? day.tiny.java : (prob ? prob.java : pat.javaBasic)) : pat.javaBasic;
+  let h = '';
+  if (q) h += '<h3>❓ The question</h3><p><b>' + esc(q) + '</b></p>' + (prob && prob.lc ? '<p>' + lcChip(prob) + '</p>' : '<p><span class="lc notfound">LeetCode: Not found — so this question opens right here.</span></p>');
+  h += '<h3>📖 Theory — in simple words</h3>' + pat.theory.split('\n').map(t => '<p>' + esc(t) + '</p>').join('');
+  h += '<h3>🎨 Visual example</h3><pre>' + esc(pat.visual) + '</pre>';
+  h += '<h3>🪜 How to solve it, step by step</h3><ol>' + pat.steps.map(s => '<li>' + esc(s) + '</li>').join('') + '</ol>';
+  h += '<h3>💻 The code for this question</h3>' + codeBlock(qPy, qJava, 'q-' + (day ? day.id : pat.id));
+  h += '<h3>📗 Basic code — ' + esc(pat.name) + '</h3>' + codeBlock(pat.pyBasic, pat.javaBasic, 'b-' + pat.id);
+  h += '<h3>📕 A harder version</h3>' + codeBlock(pat.pyMedium, pat.javaMedium, 'm-' + pat.id);
+  h += '<h3>🔍 Trace — watch the values change</h3><table class="trace"><tr><th>Step</th><th>Values</th><th>What happens</th></tr>' +
+    pat.trace.map(r => '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td><td>' + esc(r[2]) + '</td></tr>').join('') + '</table>';
+  h += '<h3>🌍 Where is this used in the real world?</h3><ul>' + pat.real.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul>';
+  if (day) h += '<div class="row"><button class="btn primary" data-done="yash" data-day="' + day.id + '">🚀 Yash · Tap Done</button><button class="btn primary" data-done="megh" data-day="' + day.id + '">🎯 Megh · Tap Done</button></div>';
+  return h;
+}
+function openExplain(dayId, patternId) {
+  const dlg = document.getElementById('explainDlg');
+  let pat, day = null, title;
+  if (dayId) { day = DAYS.find(d => d.id === dayId); pat = P[day.patternId]; title = fmtDate(day.date) + ' — ' + pat.name; }
+  else { pat = P[patternId]; title = pat.name; }
+  dlg.innerHTML = '<h2>' + esc(title) + '</h2>' + explanationHTML(pat, day) + '<div class="row" style="margin-top:14px"><button class="btn light" data-close-dlg>Close</button></div>';
+  dlg.showModal();
+}
+
+// ---------- render: ask ----------
+const ASK_KB = [];
+function buildAskKB() {
+  DSA.PATTERNS.forEach(p => {
+    ASK_KB.push({ q: 'Explain ' + p.name, pattern: p.id, a: p.theory, py: p.pyBasic, java: p.javaBasic });
+    ASK_KB.push({ q: 'Give me the code for ' + p.name, pattern: p.id, a: p.theory.split('\n')[0], py: p.pyMedium, java: p.javaMedium });
+  });
+  ASK_KB.push({ q: 'What is Big-O?', pattern: 'bigo', a: P.bigo.theory, py: P.bigo.pyBasic, java: P.bigo.javaBasic });
+  ASK_KB.push({ q: 'How do I start DSA from zero?', pattern: 'bigo', a: 'Start with Week 1: Big-O. One problem a day, about 40 minutes. Read the explanation first, then type the code yourself, then tap Done. Do not rush — the plan is 6 months for a reason.', py: P.bigo.pyBasic, java: P.bigo.javaBasic });
+  ASK_KB.push({ q: 'How do I prepare for tech company interviews?', pattern: 'dp', a: 'Companies ask the same 12 patterns again and again: arrays, two pointers, hashing, recursion, sorting, linked lists, stacks, trees, heaps, graphs, DP and greedy. This plan covers all 12, one a week, with exact LeetCode problems where they exist. Finish the 26 weeks and you will have seen every pattern an interviewer can ask.', py: P.dp.pyBasic, java: P.dp.javaBasic });
+}
+function renderAsk() {
+  const el = document.getElementById('tab-ask');
+  el.innerHTML = '<div class="card"><h2 style="margin-top:0">💬 Ask — explanations from the course</h2>' +
+    '<p class="muted">Type a concept or a problem name. You get a simple explanation first, then Python and Java code. Answers you save stay here for both of you.</p>' +
+    '<div class="askbox"><input type="text" id="askInput" placeholder="e.g. Explain two pointers with an example"><button class="btn primary" id="askGo">Ask</button></div>' +
+    '<div class="sugg">' + ['Explain Big-O', 'Explain two pointers', 'Explain hashing', 'Explain recursion', 'Explain trees', 'What is Big-O?', 'How do I start DSA from zero?'].map(s => '<button data-sugg="' + esc(s) + '">' + esc(s) + '</button>').join('') + '</div>' +
+    '<div id="askAnswer"></div></div>' +
+    '<div class="card"><h3 style="margin-top:0">Saved answers</h3><div id="savedQa">' +
+    (state.qa.length ? state.qa.map(q => '<div class="workitem"><div class="wt">' + esc(q.q) + ' <span class="muted">— ' + esc(q.person) + '</span></div><div class="muted">' + esc((q.a || '').slice(0, 200)) + '…</div><div class="row"><button class="btn" data-view-qa="' + q.id + '">Open</button><button class="btn" data-del-qa="' + q.id + '">Delete</button></div></div>').join('') : '<p class="muted">No saved answers yet.</p>') +
+    '</div></div>';
+  document.getElementById('askGo').onclick = () => doAsk(document.getElementById('askInput').value);
+  document.getElementById('askInput').addEventListener('keydown', e => { if (e.key === 'Enter') doAsk(e.target.value); });
+  el.querySelectorAll('[data-sugg]').forEach(b => b.onclick = () => { document.getElementById('askInput').value = b.dataset.sugg; doAsk(b.dataset.sugg); });
+  el.querySelectorAll('[data-view-qa]').forEach(b => b.onclick = () => { const q = state.qa.find(x => x.id === b.dataset.viewQa); if (q) showAskAnswer(q.q, q.a, q.py, q.java, false); });
+  el.querySelectorAll('[data-del-qa]').forEach(b => b.onclick = () => doAction({ action: 'deleteQa', id: b.dataset.delQa }));
+}
+function doAsk(text) {
+  const t = (text || '').trim();
+  if (!t) return;
+  const low = t.toLowerCase();
+  let best = ASK_KB.find(k => k.q.toLowerCase() === low) || ASK_KB.find(k => low.includes(k.pattern) || k.q.toLowerCase().split(' ').some(w => w.length > 4 && low.includes(w))) || ASK_KB[0];
+  // Prefer a pattern whose name appears in the question
+  const named = DSA.PATTERNS.find(p => low.includes(p.name.toLowerCase().split(' ')[0]) || low.includes(p.id));
+  if (named) best = ASK_KB.find(k => k.pattern === named.id && k.q.startsWith('Explain')) || best;
+  showAskAnswer(best.q, best.a, best.py, best.java, true, t);
+}
+function showAskAnswer(q, a, py, java, saveable, asked) {
+  const box = document.getElementById('askAnswer');
+  box.innerHTML = '<div class="panel"><h2 style="margin-top:0">' + esc(q) + '</h2>' +
+    a.split('\n').map(t => '<p>' + esc(t) + '</p>').join('') +
+    codeBlock(py, java, 'ask-' + Date.now()) +
+    (saveable ? '<div class="row"><button class="btn primary" id="saveQaBtn">💾 Save this answer</button></div>' : '') + '</div>';
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const sb = document.getElementById('saveQaBtn');
+  if (sb) sb.onclick = () => doAction({ action: 'saveQa', person: 'yash', entry: { q: asked || q, a, py, java } });
+}
+
+// ---------- render: tracker ----------
+function renderTracker() {
+  const el = document.getElementById('tab-tracker');
+  let h = '<div class="card"><h2 style="margin-top:0">📊 LeetCode-style tracking</h2>';
+  PEOPLE.forEach(p => {
+    const done = doneCount(p.id), st = streak(p.id);
+    h += '<h3>' + p.emoji + ' ' + p.name + ' — <b>' + done + '</b> / ' + TOTAL + ' problems · 🔥 ' + st.cur + ' day streak · best ' + st.best + '</h3><div class="heat">' +
+      DAYS.map(d => { const dn = state.logs[p.id][d.id]; return '<span class="' + (dn && dn.done ? 'done' : '') + (iso(d.date) === TODAY_ISO ? ' today' : '') + '" title="' + fmtDate(d.date) + '"></span>'; }).join('') + '</div>';
+  });
+  h += '<p class="muted">Each square is one day. Green = problem done. The blue outline is today.</p></div>';
+  h += '<div class="card"><h3 style="margin-top:0">Weekend log</h3>' +
+    '<label>Who? <select id="wlPerson"><option value="yash">Yash</option><option value="megh">Megh</option></select></label>' +
+    '<label>Problems solved <input type="number" id="wlProblems" min="0" value="0"></label>' +
+    '<label>Hours <input type="number" id="wlHours" min="0" step="0.5" value="0"></label>' +
+    '<label>Topics <input type="text" id="wlTopics" placeholder="e.g. Arrays, Hashing"></label>' +
+    '<label>Confidence (1-5) <input type="number" id="wlConf" min="1" max="5" value="3"></label>' +
+    '<label>Notes <input type="text" id="wlNotes" placeholder="What went well? What was hard?"></label>' +
+    '<div class="row"><button class="btn primary" id="wlSave">Save weekend log</button></div>' +
+    '<div id="wlList">' + (state.weekend.length ? state.weekend.map(w => '<div class="workitem"><div class="wt">' + esc(w.person) + ' — ' + (w.problems || 0) + ' problems · ' + (w.hours || 0) + 'h · ' + esc(w.topics || '') + ' · confidence ' + (w.confidence || '') + '/5</div><div class="muted">' + esc(w.notes || '') + '</div><div class="row"><button class="btn" data-del-wl="' + w.id + '">Delete</button></div></div>').join('') : '<p class="muted">No weekend logs yet.</p>') + '</div></div>';
+  el.innerHTML = h;
+  document.getElementById('wlSave').onclick = () => {
+    const entry = { problems: +document.getElementById('wlProblems').value || 0, hours: +document.getElementById('wlHours').value || 0, topics: document.getElementById('wlTopics').value, confidence: +document.getElementById('wlConf').value || 3, notes: document.getElementById('wlNotes').value };
+    doAction({ action: 'logWeekend', person: document.getElementById('wlPerson').value, entry });
+  };
+  el.querySelectorAll('[data-del-wl]').forEach(b => b.onclick = () => doAction({ action: 'deleteWeekend', id: b.dataset.delWl }));
+}
+
+// ---------- profile dialog ----------
+function openProfile(personId) {
+  const p = PEOPLE.find(x => x.id === personId);
+  const dlg = document.getElementById('profileDlg');
+  const doneDays = DAYS.filter(d => state.logs[personId][d.id] && state.logs[personId][d.id].done).sort((a, b) => b.date - a.date);
+  const next = DAYS.find(d => !(state.logs[personId][d.id] && state.logs[personId][d.id].done)) || DAYS[DAYS.length - 1];
+  dlg.innerHTML = '<h2>' + p.emoji + ' ' + p.name + ' — ' + doneCount(personId) + ' / ' + TOTAL + ' done (' + Math.round(doneCount(personId) / TOTAL * 100) + '%)</h2>' +
+    '<p class="muted">Tap a day to open it. Notes are saved per day and both of you can see them.</p>' +
+    '<div class="row" style="margin-bottom:12px"><button class="btn primary" data-continue="' + next.id + '">▶️ Continue to Next</button><button class="btn light" data-increase="' + (todayDay ? todayDay.id : next.id) + '">⬆️ Increase My Progress</button><button class="btn" data-close-dlg>Close</button></div>' +
+    (doneDays.length ? doneDays.map(d => {
+      const log = state.logs[personId][d.id];
+      const q = d.tiny ? d.tiny.t : (d.prob ? d.prob.t : d.title);
+      return '<div class="workitem"><div class="wt">' + fmtDate(d.date) + ' — ' + esc(q) + '</div>' +
+        '<div class="row"><button class="btn" data-open-day="' + d.id + '">Open question</button></div>' +
+        '<textarea data-note="' + d.id + '" data-person="' + personId + '" placeholder="My note for this problem…" rows="2">' + esc(log.note || '') + '</textarea></div>';
+    }).join('') : '<p class="muted">No problems done yet. Tap Done on today\'s question to start the streak.</p>');
+  dlg.showModal();
+  dlg.querySelectorAll('[data-note]').forEach(t => t.addEventListener('change', () => doAction({ action: 'setNote', person: t.dataset.person, dayId: t.dataset.note, note: t.value })));
+}
+
+// ---------- events & init ----------
+function renderAll() { renderProfiles(); renderRoadmap(); renderAsk(); renderTracker(); }
+document.addEventListener('click', e => {
+  const tab = e.target.closest('[data-tab]');
+  if (tab) {
+    document.querySelectorAll('[data-tab]').forEach(b => b.classList.toggle('active', b === tab));
+    ['roadmap', 'ask', 'tracker'].forEach(t => document.getElementById('tab-' + t).style.display = t === tab.dataset.tab ? '' : 'none');
+    return;
+  }
+  const wh = e.target.closest('[data-week]');
+  if (wh) { wh.parentElement.classList.toggle('open'); return; }
+  const prof = e.target.closest('[data-profile]');
+  if (prof) { openProfile(prof.dataset.profile); return; }
+  const op = e.target.closest('[data-open-day]');
+  if (op) { const dlg = document.getElementById('profileDlg'); if (dlg.open) dlg.close(); openExplain(op.dataset.openDay, null); return; }
+  const opp = e.target.closest('[data-open-pattern]');
+  if (opp) { openExplain(null, opp.dataset.openPattern); return; }
+  const dn = e.target.closest('[data-done]');
+  if (dn) { doAction({ action: 'toggleDay', person: dn.dataset.done, dayId: dn.dataset.day }); return; }
+  const tp = e.target.closest('[data-topic]');
+  if (tp) {
+    const cur = state.topics[tp.dataset.person][tp.dataset.topic] || 'not_started';
+    const next = cur === 'not_started' ? 'learning' : cur === 'learning' ? 'done' : 'not_started';
+    doAction({ action: 'setTopic', person: tp.dataset.person, topicId: tp.dataset.topic, status: next });
+    return;
+  }
+  const cont = e.target.closest('[data-continue]');
+  if (cont) { document.getElementById('profileDlg').close(); const d = DAYS.find(x => x.id === cont.dataset.continue); const w = document.querySelector('[data-week="' + d.week + '"]'); if (w && !w.parentElement.classList.contains('open')) w.parentElement.classList.add('open'); openExplain(d.id, null); return; }
+  const inc = e.target.closest('[data-increase]');
+  if (inc) { document.getElementById('profileDlg').close(); const el = document.getElementById('day-' + inc.dataset.increase); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  const cl = e.target.closest('[data-close-dlg]');
+  if (cl) { cl.closest('dialog').close(); return; }
+});
+document.getElementById('profileDlg').addEventListener('click', e => { if (e.target.id === 'profileDlg') e.target.close(); });
+document.getElementById('explainDlg').addEventListener('click', e => { if (e.target.id === 'explainDlg') e.target.close(); });
+buildAskKB();
+loadState();
+setInterval(() => { if (!document.hidden) loadState(); }, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) loadState(); });
+</script>
+</body>
+</html>
